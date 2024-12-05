@@ -1,19 +1,16 @@
 import streamlit as st
 import pytest
-from streamlit.testing import StreamlitTest
+from unittest.mock import patch
 
 # Import your Streamlit app
 from app import main
 
-# Define a test case class
-class TestStreamlitApp(StreamlitTest):
-    
-    def test_home_page(self):
-        # Run the Streamlit app
-        self.run_app(main)
+def test_home_page(mocker):
+    # Mock the Streamlit functions
+    mock_write = mocker.patch("streamlit.write")
 
-        # Check if the title is displayed correctly
-        assert self.get_text("Hello World!") is not None
+    # Run the Streamlit app
+    main()
 
-if __name__ == "__main__":
-    pytest.main()
+    # Check if the title is displayed correctly
+    mock_write.assert_called_once_with("Hello World!")
